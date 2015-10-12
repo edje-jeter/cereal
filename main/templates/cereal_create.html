@@ -1,0 +1,93 @@
+<h4>Create cereal</h4>
+{# {{ request }} #}
+
+<br>
+<form action="/cereal_create/" method="POST">
+    {% csrf_token %}
+
+    <label for="name_f">Name: </label>
+    <input type="text" name="name_f" id="name_css">
+    <br>
+
+    Manufacturer: 
+    <select name="manuf_name_f" id="manuf_name_css">
+        <option value="">Select A Manufacturer</option>
+        {% for manuf_l in manufs %}
+            <option value="{{manuf_l.pk}}">{{manuf_l.name}}</option>
+        {% endfor %}
+    </select><br>
+
+    <label for="cer_type_f">Cereal Type: </label>
+    <input type="text" name="cer_type_f" id="cer_type_css">
+    <br>
+
+    <label for="calories_f">Calories: </label>
+    <input type="number" name="calories_f" id="calories_css">
+    <br>
+
+    <label for="protein_f">Protein: </label>
+    <input type="number" name="protein_f" id="protein_css">
+    <br>
+
+    <label for="fat_f">Fat: </label>
+    <input type="number" name="fat_f" id="fat_css">
+    <br>
+
+    <label for="sodium_f">Sodium: </label>
+    <input type="number" name="sodium_f" id="sodium_css">
+    <br>
+
+    <label for="fiber_f">Fiber: </label>
+    <input type="number" name="fiber_f" id="fiber_css">
+    <br>
+
+    <label for="carbs_f">Carbohydrates: </label>
+    <input type="number" name="carbs_f" id="carbs_css">
+    <br>
+
+    <label for="sugars_f">Sugars: </label>
+    <input type="number" name="sugars_f" id="sugars_css">
+    <br>
+
+    <label for="potassium_f">Potassium: </label>
+    <input type="number" name="potassium_f" id="potassium_css">
+    <br>
+
+    <label for="vits_mins_f">Vitamins and Minerals: </label>
+    <input type="number" name="vits_mins_f" id="vits_mins_css">
+    <br>
+
+    <label for="ss_weight_f">Serving-size Weight: </label>
+    <input type="number" name="ss_weight_f" id="ss_weight_css">
+    <br>
+
+    <label for="cups_per_s_f">Serving-size Volume [cups]: </label>
+    <input type="number" name="cups_per_s_f" id="cups_per_s_css">
+    <br>
+
+    </br>
+    <input type="submit" value="Create">
+    </br>
+
+</form>
+{{ created }}
+
+<!--In the <label> tag the for= is used to tie the text next 
+ to the input box and the input box together. The tie is
+ accomplished by giving the for= in <label> and the name= in 
+<input> the exact same value. With the input box and input text
+ tied together, you can click on either the box or the text and
+ still register a "click"; this is rather useful with small radio
+ boxes-you don't have to hit the small radio box but can click
+ on the larger adjacent text. 
+
+The id= in <input> is used for identifying the element for CSS #
+
+Note, also, that the name= value is the same as the value in views.py; ie, in views.py we have: 
+    ... request.POST.get('fat_f', None)
+Thus, in cereal_create.html we have:
+    <label for="fat_f">Fat: </label>
+    <input type="text" name="fat_f" id="fat_css">
+    <br>
+
+http://stackoverflow.com/questions/18432376/what-does-for-attribute-do-in-label-tags !-->

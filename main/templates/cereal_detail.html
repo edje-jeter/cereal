@@ -1,0 +1,23 @@
+<h3>{{ cereal.name }}</h3>
+
+<table style="width:50%">
+    <tr><td align="right">Manufacturer: </td><td>{{ cereal.manuf }}</td></tr>
+    <tr><td align="right">Type: </td><td>{{ cereal.cer_type }}</td></tr>
+    <tr><td align="right">Calories: </td><td>{{ cereal.calories }}</td></tr>
+    <tr><td align="right">Protein [g]: </td><td>{{ cereal.protein }}</td></tr>
+    <tr><td align="right">Fat: </td><td>{{ cereal.fat }}</td></tr>
+    <tr><td align="right">Sodium: </td><td>{{ cereal.sodium }}</td></tr>
+    <tr><td align="right">Fiber: </td><td>{{ cereal.fiber }}</td></tr>
+    <tr><td align="right">Carbohydrates: </td><td>{{ cereal.carbs }}</td></tr>
+    <tr><td align="right">Sugars: </td><td>{{ cereal.sugars }}</td></tr>
+    <tr><td align="right">Potassium: </td><td>{{ cereal.potassium }}</td></tr>
+    <tr><td align="right">Other Vitamins and Minerals: </td><td>{{ cereal.vits_mins }}</td></tr>
+    <tr><td align="right">Serving-size Weight: </td><td>{{ cereal.ss_weight }}</td></tr>
+    <tr><td align="right">Serving-size Volume [cups]: </td><td>{{ cereal.cups_per_s }}</td></tr>
+</table>
+
+</br>
+<a href="/manuf_detail/{{cereal.manuf_id}}/">Return to the Manufacturer</a>
+
+</br>
+<a href="/manuf_list/">Return to the list of Manufacturers</a>

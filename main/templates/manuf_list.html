@@ -1,0 +1,25 @@
+<h2>List of Cereal Manufacturers in the Database</h2>
+
+{% for manuf_l in manufs %}
+    <a href="/manuf_detail/{{ manuf_l.pk }}/">{{ manuf_l }}</a>
+    </br>
+{% endfor %}
+
+</br></br>
+<span>Search for a Cereal:</span>
+<form action="/manuf_list/" method="POST">
+    {% csrf_token %}
+    <input name="cereal_f" type="text">
+</form>
+
+{% if display_cereal == 0 %}
+    {% for cereal_l in cereals %}
+        <a href="/cereal_detail/{{cereal_l.pk}}/">{{ cereal_l.name }}</a></br>
+    {% endfor %}
+    </br></br>
+{% elif display_cereal == 1 %}
+    </br></br>
+{% elif display_cereal == 2 %}
+    The cereal {{ not_in_db }} is not in the database.
+    </br></br>
+{% endif %}
