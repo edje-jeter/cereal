@@ -1,8 +1,18 @@
-from django.shortcuts import render, render_to_response
-from django.http import HttpResponse
+from django.shortcuts import render, render_to_response, redirect
+from django.http import HttpResponse, HttpResponseRedirect
+from django.template import RequestContext
+from django.core.mail import send_mail
+from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+from django.db import IntegrityError
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 from main.models import Manufacturer, Cereal
-from django.template import RequestContext
+
+from main.forms import ContactForm
+from main.forms import CerealEditForm, CerealCreateForm
+from main.forms import UserSignUp, UserLogin
 
 
 def manuf_list(request):
@@ -27,6 +37,8 @@ def manuf_list(request):
 
     if cereal_v is not None:
         cereals = Cereal.objects.filter(name__icontains=cereal_v)
+        for cereal in cereals:
+            cereal = cereal.replace("_", " ")
     else:
         cereals = [cereal_v]
 
@@ -73,57 +85,18 @@ def cereal_create(request):
 
     context = {}
 
-    context['request'] = request.method
-
     context['manufs'] = Manufacturer.objects.all
 
+    form_cereal_create = CerealCreateForm()
+    context['form_cereal_create_v'] = form_cereal_create
+
     if request.method == 'POST':
-        name_v = request.POST.get('name_f', None)
-        manuf_name_v = request.POST.get('manuf_name_f', None)
-        cer_type_v = request.POST.get('cer_type_f', None)
-        calories_v = request.POST.get('calories_f', None)
-        protein_v = request.POST.get('protein_f', None)
-        fat_v = request.POST.get('fat_f', None)
-        sodium_v = request.POST.get('sodium_f', None)
-        fiber_v = request.POST.get('fiber_f', None)
-        carbs_v = request.POST.get('carbs_f', None)
-        sugars_v = request.POST.get('sugars_f', None)
-        potassium_v = request.POST.get('potassium_f', None)
-        vits_mins_v = request.POST.get('vits_mins_f', None)
-        ss_weight_v = request.POST.get('ss_weight_f', None)
-        cups_per_s_v = request.POST.get('cups_per_s_f', None)
-        manuf_id_v = request.POST.get('manuf_id', None)
-
-        if manuf_id_v is not None:
-            manuf = Manufacturer.objects.get(pk=manuf_id_v)
+        form_cereal_create2 = CerealCreateForm(request.POST)
+        if form_cereal_create2.is_valid():
+            form_cereal_create2.save()
+            return HttpResponseRedirect('/manuf_list')
         else:
-            manuf = Manufacturer.objects.get(name='Nabisco')
-
-        # in the get_or_create(name=name_v), "name" has to match the column
-        # header in the source database
-        the_cereal, created = Cereal.objects.get_or_create(name=name_v)
-
-        # in the sequence below, the attributes of the_cereal (eg,
-        # the_cereal.manuf) has to match the column header in the db
-        the_cereal.manuf = manuf
-        the_cereal.cer_type = cer_type_v
-        the_cereal.calories = calories_v
-        the_cereal.protein = protein_v
-        the_cereal.fat = fat_v
-        the_cereal.sodium = sodium_v
-        the_cereal.fiber = fiber_v
-        the_cereal.carbs = carbs_v
-        the_cereal.sugars = sugars_v
-        the_cereal.potassium = potassium_v
-        the_cereal.vits_mins = vits_mins_v
-        the_cereal.ss_weight = ss_weight_v
-        the_cereal.cups_per_s = cups_per_s_v
-
-        the_cereal.save()
-
-        context['created'] = 'Operation Successful'
-    elif request.method == 'GET':
-        print "It was a GET request."
+            context['errors'] = form_cereal_create2.errors
 
     return render_to_response('cereal_create.html', context,
                               context_instance=RequestContext(request))

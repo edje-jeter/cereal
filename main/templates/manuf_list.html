@@ -1,25 +1,68 @@
-<h2>List of Cereal Manufacturers in the Database</h2>
+{% extends 'base.html' %}
+{% block body %}
 
-{% for manuf_l in manufs %}
-    <a href="/manuf_detail/{{ manuf_l.pk }}/">{{ manuf_l }}</a>
-    </br>
-{% endfor %}
+    <div class="container">
 
-</br></br>
-<span>Search for a Cereal:</span>
-<form action="/manuf_list/" method="POST">
-    {% csrf_token %}
-    <input name="cereal_f" type="text">
-</form>
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">Cereal Manufacturer
+                        <strong>List</strong>
+                    </h2>
+                    <hr>
+                </div>
 
-{% if display_cereal == 0 %}
-    {% for cereal_l in cereals %}
-        <a href="/cereal_detail/{{cereal_l.pk}}/">{{ cereal_l.name }}</a></br>
-    {% endfor %}
-    </br></br>
-{% elif display_cereal == 1 %}
-    </br></br>
-{% elif display_cereal == 2 %}
-    The cereal {{ not_in_db }} is not in the database.
-    </br></br>
-{% endif %}
+                {% for manuf_l in manufs %}
+                <div class="col-lg-12 text-center">
+                    {% comment %}
+                    <img class="img-responsive img-border img-full" src="{% static 'img/slide-1.jpg' %}" alt="">
+                    {% endcomment %}
+                    <h2><a href="/manuf_detail/{{ manuf_l.pk }}/">{{ manuf_l }}</a>
+                    </h2>
+                    <p>
+                        {% for cereal in manuf_l.cereal_set.all|slice:":5" %}
+                            <a href="/cereal_detail/{{ cereal.pk }}">{{ cereal }}</a>; 
+                        {% endfor %}
+                    </p>
+                    {# <a href="/state_detail/{{ state.pk }}" class="btn btn-default btn-lg">Read More</a> #}
+                    <hr>
+                </div>
+                {% endfor %}
+
+
+                {% comment %}
+                <div class="col-lg-12 text-center">
+                    <ul class="pager">
+                        <li class="previous"><a href="#">&larr; Older</a>
+                        </li>
+                        <li class="next"><a href="#">Newer &rarr;</a>
+                        </li>
+                    </ul>
+                </div>
+                {% endcomment %}
+            </div>
+        </div>
+
+    </div>
+
+
+    <span>Search for a Cereal:</span>
+    <form action="/manuf_list/" method="POST">
+        {% csrf_token %}
+        <input name="cereal_f" type="text">
+    </form>
+
+    {% if display_cereal == 0 %}
+        {% for cereal_l in cereals %}
+            <a href="/cereal_detail/{{cereal_l.pk}}/">{{ cereal_l.name }}</a></br>
+        {% endfor %}
+        </br></br>
+    {% elif display_cereal == 1 %}
+        </br></br>
+    {% elif display_cereal == 2 %}
+        The cereal {{ not_in_db }} is not in the database.
+        </br></br>
+    {% endif %}
+
+{% endblock body %}

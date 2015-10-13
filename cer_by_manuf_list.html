@@ -1,9 +1,0 @@
-{% for manuf in manufs %}
-    <h3>Cereals Sold by {{ manuf.name }}</h3>
-    {% for cereal in manuf.cereal_set.all %}
-        <a href="/cereal_detail/{{ cereal.pk }}/">{{ cereal.name }}</a></br>
-    {% endfor %}
-{% endfor %}
-
-</br>
-<a href="/manuf_list/">Return to the list of States</a>
